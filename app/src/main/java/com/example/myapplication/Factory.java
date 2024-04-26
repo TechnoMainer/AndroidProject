@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import android.annotation.SuppressLint;
 import android.util.Log;
 
 import java.math.BigDecimal;
@@ -14,49 +13,57 @@ public class Factory {
     BigDecimal upgcost;
     int ascendlv;
     int time = 9910;
+    double ascendmulty;
 
-    public Factory(BigDecimal income, int time) {
+    public Factory(BigDecimal income, int time, double ascmult) {
         this.income = income;
         this.upgcost = income.multiply(BigDecimal.valueOf(3));
         this.startincome = income;
-        Gen gen = new Gen(income, time);
+        this.ascendmulty = ascmult;
+        Gen gen = new Gen(this);
         gen.start();
     }
 
-    public void upgrade(BigDecimal money){
-        income = income.add(startincome);
-        money = money.subtract(upgcost);
-        upglv+=1;
-        upgcost = upgcost.multiply(BigDecimal.valueOf(1.1));
-        time -= 90;
+    public void upgrade(){
+        if (upglv<100&&MainActivity.money.compareTo(upgcost)>0) {
+            Log.d("MYLOG", "UPGRADED");
+            income = income.add(startincome);
+            MainActivity.money = MainActivity.money.subtract(upgcost);
+            upglv += 1;
+            upgcost = upgcost.multiply(BigDecimal.valueOf(1.2));
+            time -= 90;
+            MainActivity.adapter.notifyDataSetChanged();
+        }
     }
 
-    public void ascending(int ascendmulty){
-        income = income.multiply(BigDecimal.valueOf(ascendmulty));
-        ascendlv+=1;
-        upglv=0;
-        startincome = income;
-        upgcost = income.multiply(BigDecimal.valueOf(3));
-        time = 9910;
+    public void ascending(){
+        if (upglv==100) {
+            Log.d("MYLOG", "ASCENDED");
+            ascendmulty+=0.4;
+            income = income.multiply(BigDecimal.valueOf(ascendmulty));
+            ascendlv += 1;
+            upglv = 1;
+            startincome = income;
+            upgcost = income.multiply(BigDecimal.valueOf(3));
+            time = 9910;
+            MainActivity.adapter.notifyDataSetChanged();
+        }
     }
 }
 
 class Gen extends Thread{
 
-    BigDecimal income = BigDecimal.valueOf(0);
-    int time;
-    public Gen(BigDecimal income, int time){
-       this.income = income;
-       this.time = time;
+    Factory factory;
+    public Gen(Factory factory){
+       this.factory = factory;
     }
 
     @Override
     public void run() {
         while (true){
-            Log.d("MYLOG", String.valueOf(MainActivity.money));
-            MainActivity.money = MainActivity.money.add(income);
+            MainActivity.money = MainActivity.money.add(factory.income);
             try {
-                sleep(time);
+                sleep(factory.time);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
