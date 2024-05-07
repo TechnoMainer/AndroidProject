@@ -20,6 +20,7 @@ public class Factory {
         this.upgcost = income.multiply(BigDecimal.valueOf(3));
         this.startincome = income;
         this.ascendmulty = ascmult;
+        this.upglv = 0;
         Gen gen = new Gen(this);
         gen.start();
     }
@@ -60,12 +61,14 @@ class Gen extends Thread{
 
     @Override
     public void run() {
-        while (true){
-            MainActivity.money = MainActivity.money.add(factory.income);
-            try {
-                sleep(factory.time);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+        if (factory.upglv>0){
+            while (true){
+                MainActivity.money = MainActivity.money.add(factory.income);
+                try {
+                    sleep(factory.time);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
