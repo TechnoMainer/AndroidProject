@@ -14,26 +14,35 @@ public class Factory {
     int ascendlv;
     int time = 9910;
     double ascendmulty;
+    Gen gen;
 
     public Factory(BigDecimal income, int time, double ascmult) {
         this.income = income;
-        this.upgcost = income.multiply(BigDecimal.valueOf(3));
+        this.upgcost = income;
         this.startincome = income;
         this.ascendmulty = ascmult;
         this.upglv = 0;
-        Gen gen = new Gen(this);
-        gen.start();
+        gen = new Gen(this);
     }
 
     public void upgrade(){
-        if (upglv<100&&MainActivity.money.compareTo(upgcost)>0) {
+
+        if (upglv<100&&MainActivity.money.compareTo(upgcost)>=0) {
             Log.d("MYLOG", "UPGRADED");
-            income = income.add(startincome);
             MainActivity.money = MainActivity.money.subtract(upgcost);
             upglv += 1;
-            upgcost = upgcost.multiply(BigDecimal.valueOf(1.2));
+            if(upglv==1){
+                upgcost = upgcost.multiply(BigDecimal.valueOf(3));
+            }
+            else{
+                income = income.add(startincome);
+                upgcost = upgcost.multiply(BigDecimal.valueOf(1.2));
+            }
             time -= 90;
             MainActivity.adapter.notifyDataSetChanged();
+            if(upglv==1&&!gen.isAlive()){
+                gen.start();
+            }
         }
     }
 
@@ -45,7 +54,7 @@ public class Factory {
             ascendlv += 1;
             upglv = 1;
             startincome = income;
-            upgcost = income.multiply(BigDecimal.valueOf(3));
+            upgcost = income.multiply(BigDecimal.valueOf(1));
             time = 9910;
             MainActivity.adapter.notifyDataSetChanged();
         }
@@ -63,12 +72,13 @@ class Gen extends Thread{
     public void run() {
         if (factory.upglv>0){
             while (true){
-                MainActivity.money = MainActivity.money.add(factory.income);
+                Log.d("MYLOG", String.valueOf(factory.income));
                 try {
                     sleep(factory.time);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                MainActivity.money = MainActivity.money.add(factory.income);
             }
         }
     }

@@ -58,7 +58,7 @@ public class CustomAdapter extends BaseAdapter{
         Button upgbtn = (Button) view.findViewById(R.id.upg);
         Button ascbtn = (Button) view.findViewById(R.id.asc);
 
-        upgbtn.setText(String.valueOf(factories[position].upgcost));
+        upgbtn.setText(String.valueOf(factories[position].upgcost.toBigInteger()));
         income.setText(String.valueOf(factories[position].income));
         upglv.setText(String.valueOf(factories[position].upglv));
         name.setText(String.valueOf(factories[position].name));

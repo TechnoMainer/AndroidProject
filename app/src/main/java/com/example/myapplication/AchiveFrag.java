@@ -8,6 +8,7 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.List;
 
@@ -22,14 +23,6 @@ public class AchiveFrag extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ImageView closebutton = view.findViewById(R.id.close);
         ListView achives = view.findViewById(R.id.listview);
-
-        closebutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getFragmentManager().popBackStack();
-            }
-        });
     }
 }
