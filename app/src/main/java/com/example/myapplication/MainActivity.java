@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -65,22 +66,29 @@ public class MainActivity extends AppCompatActivity {
 
         ChangeThread changeThread = new ChangeThread();
         changeThread.start();
-        FragmentTransaction ft = fm.beginTransaction();
-        AchiveFrag af = new AchiveFrag();
-        ft.hide(af);
-        ft.commit();
+
+
+        //ft.hide(af);
+
 
         achivebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AchiveFrag af = new AchiveFrag();
+                FragmentTransaction ft = fm.beginTransaction();
                 if(!af.isAdded()) {
+                    Log.d("DD", "opened");
                     ft.replace(R.id.achivments, af);
+                    ft.commit();
                 }
                 else{
-                    ft.remove(af);
+                    Log.d("DD", "closed");
+//                    ft.remove(af);
+                    //ft.commit();
                 }
                 try {
-                    ft.commit();
+                    Log.d("DD", "commit");
+                    //ft.commit();
                 } catch (Exception e) {
                     throw new RuntimeException("Alredy Commited");
                 }
