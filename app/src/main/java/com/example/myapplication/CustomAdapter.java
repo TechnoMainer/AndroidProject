@@ -69,7 +69,7 @@ public class CustomAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 Objects.requireNonNull(factory).upgrade();
-                MainActivity.adapter.notifyDataSetChanged();
+                Automation.adapter.notifyDataSetChanged();
 
             }
         });
@@ -77,7 +77,7 @@ public class CustomAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 Objects.requireNonNull(factory).ascending();
-                MainActivity.adapter.notifyDataSetChanged();
+                Automation.adapter.notifyDataSetChanged();
             }
         });
 

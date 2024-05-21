@@ -27,7 +27,7 @@ public class Achievment {
         if (!completed){
             switch (reqtype){
                 case "money":
-                    if(MainActivity.money.compareTo(req)>0){
+                    if(Automation.money.compareTo(req)>0){
                         completed = true;
                     }
                 default:

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/clicker2"
+        android:enabled="true"
+        android:title="Clicker"
+        android:icon="@drawable/cursor"/>
+    <item
+        android:id="@+id/automation"
+        android:enabled="true"
+        android:title="Automation"
+        android:icon="@drawable/factories"/>
+    <item
+        android:id="@+id/prestige2"
+        android:enabled="true"
+        android:title="Prestige"
+        android:icon="@drawable/prestige"/>
+</menu>

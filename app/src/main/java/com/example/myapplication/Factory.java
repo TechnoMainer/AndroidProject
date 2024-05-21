@@ -27,9 +27,9 @@ public class Factory {
 
     public void upgrade(){
 
-        if (upglv<100&&MainActivity.money.compareTo(upgcost)>=0) {
+        if (upglv<100&&Automation.money.compareTo(upgcost)>=0) {
             Log.d("MYLOG", "UPGRADED");
-            MainActivity.money = MainActivity.money.subtract(upgcost);
+            Automation.money = Automation.money.subtract(upgcost);
             upglv += 1;
             if(upglv==1){
                 upgcost = upgcost.multiply(BigDecimal.valueOf(3));
@@ -39,7 +39,7 @@ public class Factory {
                 upgcost = upgcost.multiply(BigDecimal.valueOf(1.2));
             }
             time -= 90;
-            MainActivity.adapter.notifyDataSetChanged();
+            Automation.adapter.notifyDataSetChanged();
             if(upglv==1&&!gen.isAlive()){
                 gen.start();
             }
@@ -56,7 +56,7 @@ public class Factory {
             startincome = income;
             upgcost = income.multiply(BigDecimal.valueOf(1));
             time = 9910;
-            MainActivity.adapter.notifyDataSetChanged();
+            Automation.adapter.notifyDataSetChanged();
         }
     }
 }
@@ -78,7 +78,7 @@ class Gen extends Thread{
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                MainActivity.money = MainActivity.money.add(factory.income);
+                Automation.money = Automation.money.add(factory.income);
             }
         }
     }
