@@ -27,9 +27,9 @@ public class Factory {
 
     public void upgrade(){
 
-        if (upglv<100&&Automation.money.compareTo(upgcost)>=0) {
+        if (upglv<100&&MainActivity.money.compareTo(upgcost)>=0) {
             Log.d("MYLOG", "UPGRADED");
-            Automation.money = Automation.money.subtract(upgcost);
+            MainActivity.money = MainActivity.money.subtract(upgcost);
             upglv += 1;
             if(upglv==1){
                 upgcost = upgcost.multiply(BigDecimal.valueOf(3));
@@ -78,7 +78,7 @@ class Gen extends Thread{
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                Automation.money = Automation.money.add(factory.income);
+                MainActivity.money = MainActivity.money.add(factory.income);
             }
         }
     }

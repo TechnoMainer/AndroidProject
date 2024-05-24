@@ -27,17 +27,12 @@ import java.util.Map;
 public class Automation extends Fragment {
 
 
-    public static BigDecimal money;
-    public static BigDecimal prevmoney;
     public int ascendmulty;
 
     ArrayList<Map<String, Object>> Factories = new ArrayList<>();
     static CustomAdapter adapter;
 
     ListView listView;
-    static TextView  mon;
-    ImageView achivebutton;
-    FragmentManager fm;
 
 
 
@@ -51,15 +46,10 @@ public class Automation extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_automation, container, false);
-        money = BigDecimal.valueOf(1000);
         //fm = getSupportFragmentManager();
-        prevmoney = money;
         listView = view.findViewById(R.id.listview);
-        mon = view.findViewById(R.id.money);
-        achivebutton = view.findViewById(R.id.achivment);
-        //BottomNavigationView navigation = view.findViewById(R.id.bottomNavigationView);
 
-        mon.setText(String.valueOf(money.toBigInteger()));
+        MainActivity.mon.setText(String.valueOf(MainActivity.money.toBigInteger()));
         Factory fac1 = new Factory(BigDecimal.valueOf(10), 10000, 1.0);
         fac1.upglv = 1;
         fac1.upgcost = BigDecimal.valueOf(30);
@@ -77,52 +67,7 @@ public class Automation extends Fragment {
         adapter = new CustomAdapter(facts, view.getContext());
         listView.setAdapter(adapter);
 
-        ChangeThread changeThread = new ChangeThread();
-        changeThread.start();
-
-
-        //ft.hide(af);
-
-
-        achivebutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AchiveFrag af = new AchiveFrag();
-                FragmentTransaction ft = fm.beginTransaction();
-                if(!af.isAdded()) {
-                    Log.d("DD", "opened");
-                    ft.replace(R.id.achivments, af);
-                    ft.commit();
-                }
-                else{
-                    Log.d("DD", "closed");
-//                    ft.remove(af);
-                    //ft.commit();
-                }
-                try {
-                    Log.d("DD", "commit");
-                    //ft.commit();
-                } catch (Exception e) {
-                    throw new RuntimeException("Alredy Commited");
-                }
-            }
-        });
-
-
-
         return view;
     }
 }
 
-class ChangeThread extends Thread{
-
-    @Override
-    public void run(){
-        while (true){
-            if(!Automation.prevmoney.equals(Automation.money)){
-                Automation.prevmoney = Automation.money;
-                Automation.mon.setText(String.valueOf(Automation.money.toBigInteger()));
-            }
-        }
-    }
-}

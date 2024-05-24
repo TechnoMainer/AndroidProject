@@ -29,7 +29,6 @@ public class AchiveFrag extends Fragment {
         //super.onViewCreated(view, savedInstanceState);
 
         View view = inflater.inflate(R.layout.achivefragment, container, false);
-        ListView achives = view.findViewById(R.id.listview);
         return view;
     }
 }
