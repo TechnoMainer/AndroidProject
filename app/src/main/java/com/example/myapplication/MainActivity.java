@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fm;
     public static BigDecimal prevmoney;
     public static BigDecimal money;
-
-
 
 
     @Override
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         NavigationUI.setupWithNavController(bottomNav, navHostFragment.getNavController());
 
-        money = BigDecimal.valueOf(1000);
+        money = BigDecimal.valueOf(0);
         prevmoney = money;
 
         ChangeThread changeThread = new ChangeThread();
@@ -56,18 +55,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FragmentTransaction ft = fm.beginTransaction();
-                if(!af.isAdded()) {
-                    Log.d("DD", "opened");
-                    ft.replace(R.id.achivments2, af);
-
-                }
-                else{
-                    Log.d("DD", "closed");
-                    ft.hide(af);
-
-                }
+                Log.d("DD", "opened");
+                ft.replace(R.id.achivments2, af);
                 ft.commit();
             }});
+    }
+
+    static void change(){
+        prevmoney = money;
+        mon.setText(String.valueOf(money));
     }
 }
 
@@ -77,8 +73,7 @@ class ChangeThread extends Thread{
     public void run(){
         while (true){
             if(!MainActivity.prevmoney.equals(MainActivity.money)){
-                MainActivity.prevmoney = MainActivity.money;
-                MainActivity.mon.setText(String.valueOf(MainActivity.money.toBigInteger()));
+                MainActivity.change();
             }
         }
     }

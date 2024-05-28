@@ -7,41 +7,24 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Clicker#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.math.BigDecimal;
+
 public class Clicker extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    ImageView click;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    BigDecimal income = BigDecimal.valueOf(1);
+    BigDecimal previnc = income;
+    Button button;
 
     public Clicker() {
-        // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Clicker.
-     */
-    // TODO: Rename and change types and number of parameters
     public static Clicker newInstance(String param1, String param2) {
         Clicker fragment = new Clicker();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,16 +32,32 @@ public class Clicker extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_clicker, container, false);
+        View view = inflater.inflate(R.layout.fragment_clicker, container, false);
+        click = view.findViewById(R.id.click);
+        button = view.findViewById(R.id.upgincome);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(MainActivity.money.compareTo(income.multiply(BigDecimal.valueOf(10)))>=0){
+                    MainActivity.money = MainActivity.money.subtract(income.multiply(BigDecimal.valueOf(10)));
+                    income = income.add(previnc);
+                    button.setText(String.valueOf(income.multiply(BigDecimal.valueOf(10))));
+                }
+            }
+        });
+        click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.money = MainActivity.money.add(income.multiply(Prestige.prestigemulti));
+            }
+        });
+        return view;
     }
 }

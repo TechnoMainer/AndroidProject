@@ -9,19 +9,16 @@ public class Factory {
     BigDecimal income;
     String name = "None";
     BigDecimal startincome;
-    int upglv;
+    int upglv = 0;
     BigDecimal upgcost;
     int ascendlv;
     int time = 9910;
-    double ascendmulty;
     Gen gen;
 
-    public Factory(BigDecimal income, int time, double ascmult) {
+    public Factory(BigDecimal income, int time) {
         this.income = income;
         this.upgcost = income;
         this.startincome = income;
-        this.ascendmulty = ascmult;
-        this.upglv = 0;
         gen = new Gen(this);
     }
 
@@ -49,14 +46,15 @@ public class Factory {
     public void ascending(){
         if (upglv==100) {
             Log.d("MYLOG", "ASCENDED");
-            ascendmulty+=0.4;
-            income = income.multiply(BigDecimal.valueOf(ascendmulty));
+            Automation.ascendmulty+=0.4;
+            income = income.multiply(BigDecimal.valueOf(Automation.ascendmulty));
             ascendlv += 1;
             upglv = 1;
             startincome = income;
             upgcost = income.multiply(BigDecimal.valueOf(1));
             time = 9910;
             Automation.adapter.notifyDataSetChanged();
+            Automation.asccount +=1;
         }
     }
 }
@@ -72,13 +70,12 @@ class Gen extends Thread{
     public void run() {
         if (factory.upglv>0){
             while (true){
-                Log.d("MYLOG", String.valueOf(factory.income));
                 try {
                     sleep(factory.time);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                MainActivity.money = MainActivity.money.add(factory.income);
+                MainActivity.money = MainActivity.money.add(factory.income.multiply(Prestige.prestigemulti));
             }
         }
     }
