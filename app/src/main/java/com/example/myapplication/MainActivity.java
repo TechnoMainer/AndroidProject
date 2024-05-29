@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 
+import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.fragment.app.FragmentManager;
@@ -9,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,8 +44,9 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         NavigationUI.setupWithNavController(bottomNav, navHostFragment.getNavController());
 
-        money = BigDecimal.valueOf(0);
+        money = BigDecimal.valueOf(100000);
         prevmoney = money;
+        mon.setText(textshow(money));
 
         ChangeThread changeThread = new ChangeThread();
         changeThread.start();
@@ -63,11 +66,35 @@ public class MainActivity extends AppCompatActivity {
 
     static void change(){
         prevmoney = money;
-        mon.setText(String.valueOf(money));
+        mon.setText(textshow(money));
+    }
+
+    static String textshow(BigDecimal val1){
+        BigInteger val = val1.toBigInteger();
+        if(val1.compareTo(BigDecimal.valueOf(1000))>=0) {
+            char[] chars = val.toString().toCharArray();
+            int len = chars.length % 3;
+            String res = "";
+            String fs = "";
+            if (len==0){
+                len = 3;
+            }
+            double f;
+            for (int i = 0; i < 3; i++) {
+                fs += chars[i];
+            }
+            f = Double.parseDouble(fs);
+            f /= Math.pow(10, 3 - len);
+            res = f + "e" + (chars.length - len);
+            return res;
+        }
+        else{
+            return val.toString();
+        }
     }
 }
 
-class ChangeThread extends Thread{
+class ChangeThread extends Thread implements Runnable {
 
     @Override
     public void run(){

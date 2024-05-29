@@ -53,7 +53,6 @@ public class Automation extends Fragment {
 
         listView = view.findViewById(R.id.listview);
 
-        MainActivity.mon.setText(String.valueOf(MainActivity.money.toBigInteger()));
         Factory fac1 = new Factory(BigDecimal.valueOf(10), 10000);
         Factory fac2 = new Factory(BigDecimal.valueOf(100), 10000);
         Factory fac3 = new Factory(BigDecimal.valueOf(1000), 10000);
