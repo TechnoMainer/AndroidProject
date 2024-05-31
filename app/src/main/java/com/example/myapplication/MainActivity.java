@@ -3,7 +3,6 @@ package com.example.myapplication;
 
 import static java.lang.Thread.sleep;
 
-import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.fragment.app.FragmentManager;
@@ -11,11 +10,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-
-import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("MYLOG", "Saved");
         SharedPreferences.Editor editor = data.edit();
         editor.putString("money", money.toString());
         editor.clear();
@@ -62,8 +58,17 @@ public class MainActivity extends AppCompatActivity {
         prevmoney = money;
         mon.setText(textshow(money));
 
-        ChangeThread changeThread = new ChangeThread();
-        changeThread.run();
+        Handler handler = new Handler();
+        final Runnable r = new Runnable(){
+            public void run(){
+                if(!MainActivity.prevmoney.equals(MainActivity.money)){
+                    MainActivity.prevmoney = MainActivity.money;
+                    MainActivity.mon.setText(MainActivity.textshow(MainActivity.money));
+                }
+                handler.postDelayed(this, 10);
+            }
+        };
+        handler.postDelayed(r, 10);
         AchiveFrag af = new AchiveFrag();
 
         achivebutton.setOnClickListener(new View.OnClickListener() {
@@ -106,22 +111,16 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
-class ChangeThread implements Runnable {
-
-    @Override
-    public void run(){
-        while (true){
-            if(!MainActivity.prevmoney.equals(MainActivity.money)){
-                MainActivity.prevmoney = MainActivity.money;
-                MainActivity.mon.setText(MainActivity.textshow(MainActivity.money));
-            }
-            try {
-                sleep(10);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
-    }
-}
+//class ChangeThread implements Runnable {
+//
+//    @Override
+//    public void run(){
+//
+//        if(!MainActivity.prevmoney.equals(MainActivity.money)){
+//                MainActivity.prevmoney = MainActivity.money;
+//                MainActivity.mon.setText(MainActivity.textshow(MainActivity.money));
+//        }
+//
+//    }
+//}
 

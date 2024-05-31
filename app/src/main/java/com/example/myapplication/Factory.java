@@ -7,19 +7,29 @@ import java.math.BigDecimal;
 public class Factory {
 
     BigDecimal income;
+    BigDecimal previncome;
     String name = "None";
     int upglv = 0;
     BigDecimal upgcost;
     int ascendlv;
-    int time = 9910;
+    int time;
     Gen gen;
+    boolean genStarted;
 
-    public Factory(BigDecimal income, int upglv) {
+    public Factory(BigDecimal income, int upglv, int ascendlv, boolean genStarted, String name) {
         this.upgcost = income.multiply(BigDecimal.valueOf(Math.pow(1.2, upglv)));
         this.income = income;
+        previncome = income;
         this.upglv = upglv;
         this.income = income.multiply(BigDecimal.valueOf(upglv));
+        this.ascendlv = ascendlv;
+        this.time = 10000-90*upglv;
+        this.genStarted = genStarted;
+        this.name = name;
         gen = new Gen(this);
+        if(upglv>=1&&!gen.isAlive()&&!genStarted){
+            gen.start();
+        }
     }
 
     public void upgrade(){
@@ -27,28 +37,29 @@ public class Factory {
             MainActivity.money = MainActivity.money.subtract(upgcost);
             upglv += 1;
             if(upglv==1){
-                upgcost = upgcost.multiply(BigDecimal.valueOf(3));
+                upgcost = previncome.multiply(BigDecimal.valueOf(upglv)).multiply(BigDecimal.valueOf(3));
             }
             else{
-                income = income.multiply(BigDecimal.valueOf(upglv));
                 upgcost = upgcost.multiply(BigDecimal.valueOf(1.2));
             }
-            time -= 90;
+            time = 10000-90*upglv;
             Automation.adapter.notifyDataSetChanged();
-            if(upglv==1&&!gen.isAlive()){
+            if(upglv>=1&&!gen.isAlive()){
                 gen.start();
             }
         }
     }
 
+    public BigDecimal getIncome(){
+        return previncome.multiply(BigDecimal.valueOf(upglv)).multiply(BigDecimal.valueOf(Math.pow(Automation.ascendmulty+1, ascendlv)));
+    }
+
     public void ascending(){
         if (upglv==100) {
-            Automation.ascendmulty+=0.4;
-            income = income.multiply(BigDecimal.valueOf(Automation.ascendmulty));
             ascendlv += 1;
             upglv = 1;
-            upgcost = income.multiply(BigDecimal.valueOf(1));
-            time = 9910;
+            upgcost = previncome.multiply(BigDecimal.valueOf(10));
+            time = 10000;
             Automation.adapter.notifyDataSetChanged();
             Automation.asccount +=1;
         }
@@ -71,7 +82,7 @@ class Gen extends Thread{
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                MainActivity.money = MainActivity.money.add(factory.income.multiply(Prestige.prestigemulti));
+                MainActivity.money = MainActivity.money.add(factory.getIncome());
             }
         }
     }
