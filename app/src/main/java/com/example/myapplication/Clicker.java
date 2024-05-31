@@ -17,7 +17,7 @@ public class Clicker extends Fragment {
     ImageView click;
 
     BigDecimal income = BigDecimal.valueOf(1);
-    BigDecimal previnc = income;
+    BigDecimal previnc = BigDecimal.valueOf(1);
     Button button;
 
     public Clicker() {
@@ -33,6 +33,11 @@ public class Clicker extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    public void onDestroy(Bundle savedInstanceState) {
+        savedInstanceState.putString("income", String.valueOf(income));
+        super.onDestroy();
     }
 
     @Override

@@ -43,14 +43,6 @@ public class Prestige extends Fragment {
                 if(Automation.fac8.upglv>=1){
                     prestigemulti = prestigemulti.add(BigDecimal.valueOf(Automation.asccount));
                     MainActivity.money = BigDecimal.valueOf(0);
-                    Automation.fac1 = new Factory(BigDecimal.valueOf(10), 10000);
-                    Automation.fac2 = new Factory(BigDecimal.valueOf(100), 10000);
-                    Automation.fac3 = new Factory(BigDecimal.valueOf(1000), 10000);
-                    Automation.fac4 = new Factory(BigDecimal.valueOf(10000), 10000);
-                    Automation.fac5 = new Factory(BigDecimal.valueOf(100000), 10000);
-                    Automation.fac6 = new Factory(BigDecimal.valueOf(1000000), 1000);
-                    Automation.fac7 = new Factory(BigDecimal.valueOf(10000000), 10000);
-                    Automation.fac8 = new Factory(BigDecimal.valueOf(100000000), 10000);
                 }
             }
         });

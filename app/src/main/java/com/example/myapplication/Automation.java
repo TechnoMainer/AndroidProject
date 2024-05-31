@@ -53,14 +53,14 @@ public class Automation extends Fragment {
 
         listView = view.findViewById(R.id.listview);
 
-        Factory fac1 = new Factory(BigDecimal.valueOf(10), 10000);
-        Factory fac2 = new Factory(BigDecimal.valueOf(100), 10000);
-        Factory fac3 = new Factory(BigDecimal.valueOf(1000), 10000);
-        Factory fac4 = new Factory(BigDecimal.valueOf(10000), 10000);
-        Factory fac5 = new Factory(BigDecimal.valueOf(100000), 10000);
-        Factory fac6 = new Factory(BigDecimal.valueOf(1000000), 1000);
-        Factory fac7 = new Factory(BigDecimal.valueOf(10000000), 10000);
-        Factory fac8 = new Factory(BigDecimal.valueOf(100000000), 10000);
+        Factory fac1 = new Factory(BigDecimal.valueOf(10), 10);
+        Factory fac2 = new Factory(BigDecimal.valueOf(100), 0);
+        Factory fac3 = new Factory(BigDecimal.valueOf(1000), 0);
+        Factory fac4 = new Factory(BigDecimal.valueOf(10000), 0);
+        Factory fac5 = new Factory(BigDecimal.valueOf(100000), 0);
+        Factory fac6 = new Factory(BigDecimal.valueOf(1000000), 0);
+        Factory fac7 = new Factory(BigDecimal.valueOf(10000000), 0);
+        Factory fac8 = new Factory(BigDecimal.valueOf(100000000), 0);
 
         Factory[] facts = {fac1, fac2, fac3, fac4, fac5, fac6, fac7, fac8};
 

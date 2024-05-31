@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
 
+import static java.lang.Thread.sleep;
+
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +13,8 @@ import androidx.navigation.ui.NavigationUI;
 
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,7 +35,17 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fm;
     public static BigDecimal prevmoney;
     public static BigDecimal money;
+    SharedPreferences data;
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("MYLOG", "Saved");
+        SharedPreferences.Editor editor = data.edit();
+        editor.putString("money", money.toString());
+        editor.clear();
+        editor.apply();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +58,13 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         NavigationUI.setupWithNavController(bottomNav, navHostFragment.getNavController());
 
-        money = BigDecimal.valueOf(100000);
+        init();
         prevmoney = money;
         mon.setText(textshow(money));
 
         ChangeThread changeThread = new ChangeThread();
-        changeThread.start();
+        changeThread.run();
         AchiveFrag af = new AchiveFrag();
-
-
 
         achivebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,11 +74,6 @@ public class MainActivity extends AppCompatActivity {
                 ft.replace(R.id.achivments2, af);
                 ft.commit();
             }});
-    }
-
-    static void change(){
-        prevmoney = money;
-        mon.setText(textshow(money));
     }
 
     static String textshow(BigDecimal val1){
@@ -92,16 +99,28 @@ public class MainActivity extends AppCompatActivity {
             return val.toString();
         }
     }
+
+    private void init(){
+        data = getSharedPreferences("MainData", MODE_PRIVATE);
+        money = BigDecimal.valueOf(Long.parseLong(data.getString("money", "0")));
+    }
 }
 
-class ChangeThread extends Thread implements Runnable {
+class ChangeThread implements Runnable {
 
     @Override
     public void run(){
         while (true){
             if(!MainActivity.prevmoney.equals(MainActivity.money)){
-                MainActivity.change();
+                MainActivity.prevmoney = MainActivity.money;
+                MainActivity.mon.setText(MainActivity.textshow(MainActivity.money));
             }
+            try {
+                sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 }
